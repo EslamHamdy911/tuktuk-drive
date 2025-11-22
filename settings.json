@@ -1,0 +1,9 @@
+{
+  "defaultLanguage": "ar",
+  "theme": "dark",
+  "fareLimits": {
+    "minFare": 20,
+    "maxFare": 200
+  },
+  "deliveryOptions": ["personal_ride", "goods_delivery"]
+}
