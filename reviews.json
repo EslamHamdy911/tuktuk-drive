@@ -1,0 +1,18 @@
+[
+  {
+    "reviewId": "REV001",
+    "fromUserId": "USR001",
+    "toDriverId": "DRV001",
+    "rating": 5,
+    "comment": "سائق ممتاز وسريع 👌",
+    "date": "2025-11-22T20:40:00Z"
+  },
+  {
+    "reviewId": "REV002",
+    "fromUserId": "USR002",
+    "toDriverId": "DRV002",
+    "rating": 4,
+    "comment": "الخدمة جيدة لكن محتاجة تنظيم أكثر",
+    "date": "2025-11-22T21:20:00Z"
+  }
+]
