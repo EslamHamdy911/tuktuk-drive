@@ -1,23 +1,57 @@
 [
   {
-    "id": "TTK001",
-    "name": "سيد",
+    "id": "DRV001",
+    "username": "sayed_driver",
+    "password": "driver123",
+    "role": "driver",
+    "fullName": "سيد عبد الله",
+    "vehicle": "توكتوك",
     "rating": 4.8,
-    "vehicle": "توكتوك مظلل",
-    "location": "المنصورة"
+    "location": "المنصورة",
+    "deliveries": []
   },
   {
-    "id": "TTK002",
-    "name": "محمود",
+    "id": "DRV002",
+    "username": "mahmoud_driver",
+    "password": "pass456",
+    "role": "driver",
+    "fullName": "محمود علي",
+    "vehicle": "توكتوك",
     "rating": 4.6,
-    "vehicle": "توكتوك عادي",
-    "location": "طلخا"
+    "location": "طلخا",
+    "deliveries": []
   },
   {
-    "id": "TTK003",
-    "name": "أمجد",
-    "rating": 4.9,
+    "id": "DRV003",
+    "username": "amgad_driver",
+    "password": "amgad789",
+    "role": "driver",
+    "fullName": "أمجد حسن",
     "vehicle": "توكتوك حمولة خفيفة",
-    "location": "منية النصر"
+    "rating": 4.9,
+    "location": "منية النصر",
+    "deliveries": []
+  },
+  {
+    "id": "DRV004",
+    "username": "ibrahim_driver",
+    "password": "ibrahim2025",
+    "role": "driver",
+    "fullName": "إبراهيم مصطفى",
+    "vehicle": "توكتوك مظلل",
+    "rating": 4.7,
+    "location": "القاهرة",
+    "deliveries": []
+  },
+  {
+    "id": "DRV005",
+    "username": "adel_driver",
+    "password": "adel321",
+    "role": "driver",
+    "fullName": "عادل محمود",
+    "vehicle": "توكتوك عادي",
+    "rating": 4.5,
+    "location": "ميت غمر",
+    "deliveries": []
   }
 ]
