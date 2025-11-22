@@ -1,0 +1,16 @@
+[
+  {
+    "ticketId": "SUP001",
+    "userId": "USR001",
+    "issueType": "payment",
+    "description": "المبلغ لم يظهر في الرصيد بعد الرحلة",
+    "status": "open"
+  },
+  {
+    "ticketId": "SUP002",
+    "driverId": "DRV002",
+    "issueType": "delivery",
+    "description": "المستخدم لم يؤكد استلام البضاعة",
+    "status": "pending"
+  }
+]
