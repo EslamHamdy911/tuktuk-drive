@@ -1,0 +1,10 @@
+[
+  {
+    "id": "ADM001",
+    "username": "admin_master",
+    "password": "admin2025",
+    "role": "admin",
+    "fullName": "إدارة النظام",
+    "permissions": ["manage_users", "manage_drivers", "review_deliveries"]
+  }
+]
