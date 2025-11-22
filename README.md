@@ -1,13 +1,29 @@
-# Tuktuk Drive — Prototype
+# Tuktuk Drive — Ride & Delivery Prototype
 
-🚀 **Tuktuk Drive** is a bold, youth-driven web app that combines cloud storage and ride-hailing features — but with tuk-tuks as the main transportation mode, tailored for local cities like Mansoura and Cairo.
+🚀 **Tuktuk Drive** is a bold, youth-driven web app that combines ride-hailing and goods delivery services using tuk-tuks as the main transportation mode in Egypt. This prototype focuses on simplicity, clarity, and community impact.
 
-This is a single-page HTML prototype designed for offline testing and early feedback. It includes:
-- 🔐 Simulated cloud storage (upload, folders, sharing)
-- 🛺 Tuk-tuk booking flow (pickup, driver list, fare estimate)
-- 🌙 Dark/light mode toggle
-- 🌍 Arabic RTL support + English LTR toggle
-- 📱 Mobile-first responsive design
+---
+
+## 🔧 Features
+
+- 🛺 **Service Types**:
+  - Personal Ride (مشوار شخصي)
+  - Goods Delivery (توصيل بضاعة) with dual confirmation flow
+
+- ✅ **Delivery Confirmation Flow**:
+  - Both driver and user must confirm handover.
+  - Elegant checklist UI with green ticks once both sides approve.
+  - Simulated proof buttons for driver and user.
+
+- 🔐 **Authentication System**:
+  - Two account types: **User** and **Driver**
+  - Clear distinction in dashboards:
+    - User: ride booking and delivery requests
+    - Driver: ride requests, delivery confirmations, earnings summary
+
+- 🌙 **Dark/Light Mode Toggle**
+- 🌍 **Arabic RTL default + English toggle**
+- 📱 **Mobile-first responsive design**
 
 ---
 
@@ -18,13 +34,11 @@ This is a single-page HTML prototype designed for offline testing and early feed
 | `index.html` | Main prototype file with embedded HTML/CSS/JS |
 | `README.md` | Project overview and usage instructions |
 | `favicon.ico` *(optional)* | Placeholder icon for browser tab |
-| `assets/logo.svg` *(optional)* | App logo used in header/footer |
-| `assets/hero.png` *(optional)* | Illustration for hero section |
+| `assets/logo.svg` *(optional)* | App logo |
+| `assets/hero.png` *(optional)* | Hero illustration |
 | `assets/map.svg` *(optional)* | Dummy map for ride tracking |
-| `assets/drivers.json` *(optional)* | Sample driver data (for future JS expansion) |
-| `assets/files.json` *(optional)* | Sample file list (for future JS expansion) |
-
-> 💡 You can run this project offline by simply opening `index.html` in any browser. No server or internet required.
+| `assets/drivers.json` | Sample driver data |
+| `assets/users.json` | Sample user accounts (for login simulation) |
 
 ---
 
@@ -32,17 +46,19 @@ This is a single-page HTML prototype designed for offline testing and early feed
 
 1. Clone or download this repo locally.
 2. Open `index.html` in your browser.
-3. Test features like:
-   - Uploading dummy files
-   - Booking a tuk-tuk
-   - Switching language and theme
-   - Navigating dashboard tabs
+3. Choose login type:
+   - **User** → Book rides or request deliveries.
+   - **Driver** → Accept requests and confirm deliveries.
+4. Test flows:
+   - Book a personal ride.
+   - Book a goods delivery and complete the dual confirmation.
+   - Switch between dark/light mode and languages.
 
 ---
 
 ## 📌 Notes
 
-- All data is simulated — no backend or real API calls.
+- All flows are simulated — no backend or real API calls.
 - Designed for prototyping and UI testing only.
 - Feedback and suggestions are welcome!
 
@@ -50,5 +66,4 @@ This is a single-page HTML prototype designed for offline testing and early feed
 
 ## 📣 Credits
 
-Created by [Islam] — Cairo/Mansoura-based entrepreneur building smart, local-first digital tools.
-
+Created by **Islam** — Cairo/Mansoura-based entrepreneur building smart, local-first digital tools.
