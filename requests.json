@@ -1,0 +1,26 @@
+[
+  {
+    "requestId": "REQ001",
+    "userId": "USR001",
+    "driverId": "DRV001",
+    "serviceType": "personal_ride",
+    "status": "completed",
+    "timestamps": {
+      "requested": "2025-11-22T20:00:00Z",
+      "accepted": "2025-11-22T20:05:00Z",
+      "completed": "2025-11-22T20:30:00Z"
+    }
+  },
+  {
+    "requestId": "REQ002",
+    "userId": "USR002",
+    "driverId": "DRV002",
+    "serviceType": "goods_delivery",
+    "status": "active",
+    "timestamps": {
+      "requested": "2025-11-22T21:00:00Z",
+      "accepted": "2025-11-22T21:10:00Z",
+      "completed": null
+    }
+  }
+]
