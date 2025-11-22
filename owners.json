@@ -1,0 +1,16 @@
+[
+  {
+    "id": "OWN001",
+    "username": "owner_main",
+    "password": "owner2025",
+    "role": "owner",
+    "fullName": "مالك المشروع",
+    "permissions": ["view_business_stats", "view_financials", "strategic_controls"],
+    "businessInsights": {
+      "totalUsers": 200,
+      "totalDrivers": 50,
+      "totalAdmins": 3,
+      "monthlyEarnings": 15000
+    }
+  }
+]
