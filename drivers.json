@@ -7,6 +7,26 @@
     "fullName": "سيد عبد الله",
     "vehicle": "توكتوك",
     "rating": 4.8,
+    "location": "المنصورة"
+  },
+  {
+    "id": "DRV002",
+    "username": "mahmoud_driver",
+    "password": "pass456",
+    "role": "driver",
+    "fullName": "محمود علي",
+    "vehicle": "توكتوك",
+    "rating": 4.6,
+    "location": "طلخا"
+  },
+  {
+    "id": "DRV001",
+    "username": "sayed_driver",
+    "password": "driver123",
+    "role": "driver",
+    "fullName": "سيد عبد الله",
+    "vehicle": "توكتوك",
+    "rating": 4.8,
     "location": "المنصورة",
     "deliveries": []
   },
