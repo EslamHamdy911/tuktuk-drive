@@ -3,36 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tuktuk Drive | Multi-Role Prototype</title>
-    <meta name="description" content="Transport and Delivery Solution for Egypt - Prototype">
+    <title>Tuktuk Drive | Offline-First Prototype</title>
+    <meta name="description" content="Egyptian Tuk-tuk booking app - Offline First Prototype">
 
     <style>
         /* =========================================
-           1. CSS VARIABLES & THEME
+           1. DESIGN SYSTEM & VARIABLES
            ========================================= */
         :root {
-            /* Brand Palette */
-            --primary: #7C3AED;      /* Electric Purple */
-            --primary-light: #8B5CF6;
-            --secondary: #06B6D4;    /* Turquoise */
-            --accent: #FACC15;       /* Energetic Yellow */
+            /* Brand Colors */
+            --primary: #7C3AED;       /* Electric Purple */
+            --primary-dark: #5B21B6;
+            --secondary: #06B6D4;     /* Turquoise */
+            --accent: #FACC15;        /* Energetic Yellow */
+            
+            /* UI Colors - Light Mode */
             --bg-body: #F3F4F6;
             --bg-card: #FFFFFF;
-            --text-main: #1F2937;
+            --text-main: #111827;
             --text-muted: #6B7280;
             --border: #E5E7EB;
             
-            /* Status Colors */
-            --success: #10B981; /* Free / Completed */
-            --danger: #EF4444;  /* Busy */
-            --warning: #F59E0B; /* Pending */
+            /* State Colors */
+            --success: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
 
-            /* UI Metrics */
+            /* Dimensions */
             --radius: 16px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --container-w: 1200px;
+            --header-h: 70px;
         }
 
+        /* Dark Mode Override */
         [data-theme="dark"] {
             --bg-body: #111827;
             --bg-card: #1F2937;
@@ -42,307 +45,292 @@
         }
 
         /* =========================================
-           2. BASE STYLES & RESET
+           2. RESET & UTILITIES
            ========================================= */
-        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.2s ease; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: var(--bg-body); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.3s, color 0.3s, transform 0.2s; font-family: system-ui, -apple-system, sans-serif; }
         
-        /* Layout Utilities */
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; width: 100%; flex: 1; }
+        body { background: var(--bg-body); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+
+        .container { width: 100%; max-width: var(--container-w); margin: 0 auto; padding: 0 1.5rem; }
         .flex { display: flex; }
         .flex-col { flex-direction: column; }
         .items-center { align-items: center; }
         .justify-between { justify-content: space-between; }
-        .grid { display: grid; gap: 1rem; }
-        .grid-2 { grid-template-columns: 1fr; }
-        .grid-4 { grid-template-columns: 1fr; }
+        .justify-center { justify-content: center; }
+        .gap-2 { gap: 0.5rem; } .gap-4 { gap: 1rem; }
+        
+        .grid { display: grid; gap: 1.5rem; }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
         .hidden { display: none !important; }
-        .mt-4 { margin-top: 1rem; } .mb-4 { margin-bottom: 1rem; }
         .text-center { text-align: center; }
-
-        @media (min-width: 768px) {
-            .grid-2 { grid-template-columns: 1fr 1fr; }
-            .grid-4 { grid-template-columns: repeat(4, 1fr); }
-        }
-
-        /* Components */
+        .mt-4 { margin-top: 1rem; } .mb-4 { margin-bottom: 1rem; }
+        
+        /* =========================================
+           3. COMPONENTS
+           ========================================= */
+        /* Buttons */
         .btn {
-            border: none; padding: 0.75rem 1.5rem; border-radius: 99px; font-weight: 700;
-            cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            padding: 0.75rem 1.5rem; border-radius: 99px; border: none; font-weight: 700; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.95rem;
         }
-        .btn:active { transform: scale(0.96); }
-        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3); }
+        .btn:active { transform: scale(0.95); }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4); }
         .btn-secondary { background: var(--secondary); color: white; }
-        .btn-outline { border: 2px solid var(--border); background: transparent; color: var(--text-main); }
+        .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text-main); }
         .btn-danger { background: var(--danger); color: white; }
         .btn-success { background: var(--success); color: white; }
-        
-        .card { background: var(--bg-card); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid var(--border); }
-        .card:hover { box-shadow: var(--shadow-hover); border-color: var(--primary-light); }
-        
-        .input-group input, .input-group select {
-            width: 100%; padding: 1rem; border-radius: var(--radius); border: 1px solid var(--border);
-            background: var(--bg-body); color: var(--text-main); margin-bottom: 0.5rem;
-        }
 
-        .badge { padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.8rem; font-weight: bold; }
-        .badge-free { background: #D1FAE5; color: #065F46; }
-        .badge-busy { background: #FEE2E2; color: #991B1B; }
+        /* Cards */
+        .card {
+            background: var(--bg-card); border-radius: var(--radius); padding: 1.5rem;
+            border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .card:hover { border-color: var(--primary); transform: translateY(-2px); }
+
+        /* Inputs */
+        input, select {
+            width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid var(--border);
+            background: var(--bg-body); color: var(--text-main); outline: none;
+        }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1); }
+
+        /* Status Badges */
+        .badge { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; }
+        .badge.free { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .badge.busy { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
 
         /* =========================================
-           3. SPECIFIC SECTIONS
+           4. LAYOUT STYLES
            ========================================= */
-        
-        /* Header */
-        header { background: var(--bg-card); padding: 1rem 0; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--border); }
-        .logo { font-size: 1.5rem; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
+        header { background: var(--bg-card); height: var(--header-h); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border); display: flex; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 5px; }
         .logo span { color: var(--secondary); }
 
-        /* Auth Cards */
-        .auth-card { text-align: center; cursor: pointer; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; }
+        .auth-card { cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: center; }
         .auth-icon { font-size: 3rem; margin-bottom: 1rem; }
-        
-        /* Driver List (Passenger View) */
-        .driver-row { display: flex; align-items: center; justify-content: space-between; padding: 1rem; border-bottom: 1px solid var(--border); }
-        .driver-row:last-child { border-bottom: none; }
-        
-        /* Owner Charts (CSS Only) */
-        .chart-bar { height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; margin-top: 5px; }
-        .chart-fill { height: 100%; background: var(--primary); width: 0; transition: width 1s ease; }
 
-        /* Delivery Protocol */
-        .checklist { display: flex; gap: 1rem; margin-top: 1rem; }
-        .check-item { flex: 1; border: 2px dashed var(--border); padding: 1rem; border-radius: var(--radius); text-align: center; opacity: 0.6; }
-        .check-item.done { border-style: solid; border-color: var(--success); background: rgba(16, 185, 129, 0.1); opacity: 1; }
-        .check-icon { font-size: 1.5rem; display: block; margin-bottom: 0.5rem; }
+        /* Dashboard Specifics */
+        .driver-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid var(--border); }
+        .checklist-item { display: flex; gap: 1rem; opacity: 0.5; margin-bottom: 0.5rem; align-items: center; }
+        .checklist-item.done { opacity: 1; color: var(--success); font-weight: bold; }
+        
+        /* Owner Charts (CSS Only Bars) */
+        .chart-bar-container { height: 10px; background: var(--bg-body); border-radius: 5px; overflow: hidden; margin-top: 5px; }
+        .chart-bar-fill { height: 100%; background: var(--primary); border-radius: 5px; }
 
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
+    <!-- Header -->
     <header>
         <div class="container flex justify-between items-center">
-            <div class="logo" onclick="app.logout()">
+            <div class="logo" onclick="app.goHome()">
                 🛺 Tuktuk<span>Drive</span>
             </div>
-            <div class="flex items-center" style="gap: 0.5rem;">
-                <button class="btn btn-outline" style="padding: 5px 10px;" onclick="app.toggleTheme()">◑</button>
-                <button class="btn btn-outline" style="padding: 5px 10px;" onclick="app.toggleLang()">
-                    <span id="lang-disp">EN</span>
+            <div class="flex gap-2 items-center">
+                <button class="btn btn-outline" style="padding: 0.5rem;" onclick="ui.toggleTheme()">◑</button>
+                <button class="btn btn-outline" style="padding: 0.5rem;" onclick="ui.toggleLang()">
+                    <span id="lang-display">EN</span>
                 </button>
-                <button id="btn-logout" class="btn btn-danger hidden" style="padding: 5px 15px;" onclick="app.logout()" data-i18n="logout">Logout</button>
+                <button id="logout-btn" class="btn btn-danger hidden" onclick="app.logout()">Logout</button>
             </div>
         </div>
     </header>
 
-    <main>
+    <!-- Main Content Area -->
+    <main class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
         
-        <!-- VIEW 1: LANDING / AUTH SELECTION -->
-        <section id="view-landing" class="container" style="padding-top: 2rem;">
+        <!-- 1. LANDING / LOGIN -->
+        <section id="view-landing">
             <div class="text-center mb-4">
-                <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;" data-i18n="welcome_title">Choose Your Role</h1>
-                <p style="color: var(--text-muted);" data-i18n="welcome_sub">Simulation Prototype - No Password Required</p>
+                <h1 class="mb-4" style="font-size: 2.5rem;" data-i18n="welcome_title">Transport & Delivery</h1>
+                <p class="text-muted" data-i18n="welcome_sub">Select your role to login (Simulation)</p>
             </div>
-
             <div class="grid grid-4">
-                <!-- Passenger -->
                 <div class="card auth-card" onclick="app.login('passenger')">
                     <div class="auth-icon">🙋‍♂️</div>
                     <h3 data-i18n="role_passenger">Passenger</h3>
-                    <p style="font-size: 0.8rem; color: var(--text-muted);" data-i18n="desc_passenger">Book rides & delivery</p>
                 </div>
-                <!-- Driver -->
                 <div class="card auth-card" onclick="app.login('driver')">
                     <div class="auth-icon">🛺</div>
                     <h3 data-i18n="role_driver">Driver</h3>
-                    <p style="font-size: 0.8rem; color: var(--text-muted);" data-i18n="desc_driver">Accept jobs & earn</p>
                 </div>
-                <!-- Admin -->
                 <div class="card auth-card" onclick="app.login('admin')">
-                    <div class="auth-icon">👨‍💻</div>
+                    <div class="auth-icon">🛡️</div>
                     <h3 data-i18n="role_admin">Admin</h3>
-                    <p style="font-size: 0.8rem; color: var(--text-muted);" data-i18n="desc_admin">Manage operations</p>
                 </div>
-                <!-- Owner -->
-                <div class="card auth-card" style="border-color: var(--accent);" onclick="app.login('owner')">
+                <div class="card auth-card" onclick="app.login('owner')">
                     <div class="auth-icon">💼</div>
                     <h3 data-i18n="role_owner">Owner</h3>
-                    <p style="font-size: 0.8rem; color: var(--text-muted);" data-i18n="desc_owner">Business insights</p>
                 </div>
             </div>
         </section>
 
-        <!-- VIEW 2: PASSENGER DASHBOARD -->
-        <section id="view-passenger" class="container hidden" style="padding-top: 2rem;">
-            <h2 class="mb-4"><span data-i18n="hello">Hello</span>, Passenger</h2>
+        <!-- 2. PASSENGER DASHBOARD -->
+        <section id="view-passenger" class="hidden">
+            <h2 class="mb-4"><span data-i18n="hello">Hello</span>, <span class="text-primary">Passenger</span></h2>
             
             <div class="grid grid-2">
-                <!-- Booking Panel -->
+                <!-- Booking Form -->
                 <div class="card">
                     <h3 class="mb-4" data-i18n="book_ride">Book a Ride</h3>
-                    
-                    <div class="input-group">
-                        <select id="service-type" onchange="app.toggleServiceType()">
-                            <option value="ride" data-i18n="opt_personal">Personal Ride</option>
-                            <option value="delivery" data-i18n="opt_delivery">Goods Delivery</option>
+                    <div class="flex-col gap-2">
+                        <select id="p-service-type">
+                            <option value="personal" data-i18n="srv_personal">Personal Ride</option>
+                            <option value="delivery" data-i18n="srv_delivery">Goods Delivery</option>
                         </select>
-                        <input type="text" placeholder="Pickup Location" data-i18n-ph="ph_pickup">
-                        <input type="text" placeholder="Destination" data-i18n-ph="ph_dest">
+                        <input type="text" id="p-pickup" placeholder="Pickup Location" data-i18n-ph="ph_pickup">
+                        <input type="text" id="p-dest" placeholder="Destination" data-i18n-ph="ph_dest">
                     </div>
-
-                    <div id="driver-list-container">
-                        <h4 style="margin: 1rem 0; color: var(--text-muted);" data-i18n="avail_drivers">Available Drivers (Free)</h4>
-                        <div id="driver-list" style="max-height: 300px; overflow-y: auto;">
-                            <!-- Injected via JS -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Active Ride Panel -->
-                <div class="card" id="passenger-active-panel" style="opacity: 0.5; pointer-events: none;">
-                    <h3 class="mb-4" data-i18n="active_trip">Active Trip</h3>
-                    <div id="passenger-status-msg" class="text-center" style="padding: 2rem;">
-                        <p data-i18n="no_active_trip">No active trip.</p>
-                    </div>
+                    <hr class="mt-4 mb-4" style="border: 0; border-top: 1px solid var(--border);">
                     
-                    <!-- Delivery Protocol UI -->
-                    <div id="delivery-protocol-ui" class="hidden">
-                        <div class="checklist">
-                            <div class="check-item" id="chk-driver-proof">
-                                <span class="check-icon">📷</span>
-                                <small data-i18n="step_driver_proof">Driver Proof</small>
-                            </div>
-                            <div class="check-item" id="chk-user-confirm">
-                                <span class="check-icon">✅</span>
-                                <small data-i18n="step_you_confirm">Your Confirm</small>
-                            </div>
-                        </div>
-                        <button id="btn-user-confirm" class="btn btn-success mt-4" style="width: 100%" onclick="app.passengerConfirmReceipt()" disabled>
-                            <span data-i18n="btn_confirm_receipt">Confirm Receipt</span>
-                        </button>
+                    <h4 class="mb-4 text-muted" data-i18n="avail_drivers">Available Drivers</h4>
+                    <div id="p-driver-list" class="flex-col gap-2">
+                        <!-- Injected via JS -->
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- VIEW 3: DRIVER DASHBOARD -->
-        <section id="view-driver" class="container hidden" style="padding-top: 2rem;">
-            <div class="flex justify-between items-center mb-4">
-                <h2>Capt. <span id="driver-name-display">Sayed</span></h2>
-                <div class="badge badge-free" id="driver-status-badge" style="font-size: 1rem; padding: 0.5rem 1rem;">Free</div>
-            </div>
-
-            <div class="grid grid-2">
-                <!-- Job Card -->
-                <div class="card">
-                    <h3 data-i18n="current_job">Current Job</h3>
-                    <div id="driver-job-area" class="text-center mt-4">
-                        <p style="color: var(--text-muted); margin-bottom: 1rem;" data-i18n="waiting_jobs">Waiting for requests...</p>
-                        <div class="loader hidden" style="border: 3px solid var(--border); border-top: 3px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                <!-- Active Ride Status -->
+                <div class="card" id="p-active-ride-panel">
+                    <h3 class="mb-4" data-i18n="active_ride">Active Ride</h3>
+                    <div id="p-no-ride" class="text-center text-muted" style="padding: 2rem;">
+                        No active trips.
                     </div>
-
-                    <!-- Active Job Controls -->
-                    <div id="driver-active-controls" class="hidden mt-4">
-                        <div style="background: var(--bg-body); padding: 1rem; border-radius: var(--radius); margin-bottom: 1rem;">
-                            <strong>To:</strong> <span id="job-dest">Maadi</span><br>
-                            <strong>Type:</strong> <span id="job-type">Personal</span><br>
-                            <strong>Fare:</strong> 50 EGP
-                        </div>
-
-                        <!-- Delivery Specific Button -->
-                        <button id="btn-driver-proof" class="btn btn-outline mb-4" style="width: 100%;" onclick="app.driverUploadProof()">
-                            📷 <span data-i18n="btn_upload_proof">Upload Proof</span>
-                        </button>
+                    <div id="p-ride-info" class="hidden">
+                        <div class="badge" id="p-ride-status-badge">En Route</div>
+                        <h2 class="mt-4" id="p-ride-driver">Sayed</h2>
+                        <p class="text-muted" id="p-ride-vehicle">Bajaj 2024</p>
                         
-                        <button class="btn btn-primary" style="width: 100%;" onclick="app.driverCompleteRide()">
-                            🏁 <span data-i18n="btn_end_trip">End Trip</span>
+                        <!-- Delivery Protocol -->
+                        <div id="p-delivery-flow" class="hidden mt-4" style="background: var(--bg-body); padding: 1rem; border-radius: 12px;">
+                            <div class="checklist-item" id="step-driver-proof">
+                                <span>📷</span> <span data-i18n="step_driver_proof">Driver Proof</span>
+                            </div>
+                            <div class="checklist-item" id="step-user-confirm">
+                                <span>✅</span> <span data-i18n="step_user_confirm">Your Confirmation</span>
+                            </div>
+                            <button id="p-btn-confirm" class="btn btn-success w-full mt-4" disabled onclick="app.passengerConfirm()">
+                                Confirm Receipt
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. DRIVER DASHBOARD -->
+        <section id="view-driver" class="hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h2>Capt. Sayed</h2>
+                <div id="d-status-badge" class="badge free">Free</div>
+            </div>
+            
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3 data-i18n="current_req">Current Request</h3>
+                    <div id="d-no-req" class="text-center text-muted" style="padding: 2rem;">
+                        Online & Waiting...
+                    </div>
+                    <div id="d-req-info" class="hidden">
+                        <div class="badge mb-4" id="d-req-type">Personal</div>
+                        <p><strong>To:</strong> <span id="d-req-dest">...</span></p>
+                        <p><strong>Price:</strong> 50 EGP</p>
+                        
+                        <div id="d-delivery-actions" class="hidden mt-4">
+                            <button id="d-btn-proof" class="btn btn-outline w-full" onclick="app.driverUploadProof()">
+                                📷 Upload Proof
+                            </button>
+                            <p id="d-wait-msg" class="text-center text-muted hidden mt-2">Waiting for client...</p>
+                        </div>
+                        
+                        <button id="d-btn-complete" class="btn btn-primary w-full mt-4" onclick="app.driverComplete()">
+                            Complete Trip
                         </button>
                     </div>
                 </div>
-
-                <!-- Stats -->
-                <div class="card">
-                    <h3 data-i18n="my_earnings">My Earnings</h3>
-                    <div style="font-size: 2.5rem; font-weight: 900; color: var(--secondary); margin: 1rem 0;">
-                        <span id="driver-earnings">150</span> EGP
-                    </div>
-                    <p style="font-size: 0.9rem; color: var(--text-muted);">Today's Total</p>
+                <div class="card text-center">
+                    <h3 data-i18n="earnings">Earnings</h3>
+                    <h1 class="text-primary" style="font-size: 3rem; margin: 1rem 0;">350 <span style="font-size: 1rem;">EGP</span></h1>
+                    <p class="text-muted">Today's Total</p>
                 </div>
             </div>
         </section>
 
-        <!-- VIEW 4: ADMIN DASHBOARD -->
-        <section id="view-admin" class="container hidden" style="padding-top: 2rem;">
-            <h2 class="mb-4" style="color: var(--primary);" data-i18n="dash_admin">Admin Dashboard</h2>
+        <!-- 4. ADMIN DASHBOARD -->
+        <section id="view-admin" class="hidden">
+            <h2 class="mb-4" data-i18n="admin_dash">Admin Dashboard</h2>
+            <div class="card">
+                <div class="flex justify-between mb-4">
+                    <h3 data-i18n="driver_status">Fleet Status</h3>
+                    <button class="btn btn-outline btn-sm" onclick="db.seedData()">♻ Reset Data</button>
+                </div>
+                <table style="width: 100%; text-align: left; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--border);">
+                            <th class="p-2">ID</th>
+                            <th class="p-2" data-i18n="col_name">Name</th>
+                            <th class="p-2" data-i18n="col_status">Status</th>
+                            <th class="p-2" data-i18n="col_action">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="a-driver-table">
+                        <!-- Injected -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 5. OWNER DASHBOARD -->
+        <section id="view-owner" class="hidden">
+            <h2 class="mb-4 text-accent" data-i18n="owner_dash">Business Overview</h2>
             
-            <div class="card mb-4">
-                <h3 class="mb-4" data-i18n="live_fleet">Live Fleet Status</h3>
-                <div style="overflow-x: auto;">
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <thead>
-                            <tr style="text-align: right; border-bottom: 2px solid var(--border);">
-                                <th style="padding: 1rem;" data-i18n="tbl_id">ID</th>
-                                <th data-i18n="tbl_name">Name</th>
-                                <th data-i18n="tbl_vehicle">Vehicle</th>
-                                <th data-i18n="tbl_status">Status</th>
-                                <th data-i18n="tbl_action">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-fleet-list">
-                            <!-- Populated by JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- VIEW 5: OWNER DASHBOARD -->
-        <section id="view-owner" class="container hidden" style="padding-top: 2rem;">
-            <h2 class="mb-4" style="color: var(--accent); text-shadow: 0 1px 2px rgba(0,0,0,0.1);" data-i18n="dash_owner">Owner Overview</h2>
-
-            <!-- KPI Cards -->
+            <!-- KPIs -->
             <div class="grid grid-4 mb-4">
                 <div class="card text-center">
-                    <small data-i18n="kpi_revenue">Total Revenue</small>
-                    <div style="font-size: 1.8rem; font-weight: bold;">50k EGP</div>
+                    <div class="text-muted text-sm">Total Revenue</div>
+                    <div class="text-xl font-bold">45,200 EGP</div>
                 </div>
                 <div class="card text-center">
-                    <small data-i18n="kpi_trips">Total Trips</small>
-                    <div style="font-size: 1.8rem; font-weight: bold;">1,240</div>
+                    <div class="text-muted text-sm">Commission (10%)</div>
+                    <div class="text-xl font-bold text-success">4,520 EGP</div>
                 </div>
                 <div class="card text-center">
-                    <small data-i18n="kpi_users">Active Users</small>
-                    <div style="font-size: 1.8rem; font-weight: bold;">850</div>
+                    <div class="text-muted text-sm">Active Drivers</div>
+                    <div class="text-xl font-bold">124</div>
                 </div>
                 <div class="card text-center">
-                    <small data-i18n="kpi_commission">Net Commission</small>
-                    <div style="font-size: 1.8rem; font-weight: bold; color: var(--success);">10%</div>
+                    <div class="text-muted text-sm">Users</div>
+                    <div class="text-xl font-bold">8,500</div>
                 </div>
             </div>
 
             <!-- Charts -->
             <div class="grid grid-2">
                 <div class="card">
-                    <h3 data-i18n="chart_growth">Monthly Growth</h3>
-                    <div style="margin-top: 1rem;">
-                        <div class="flex justify-between" style="font-size: 0.8rem; margin-bottom: 5px;"><span>Jan</span><span>40%</span></div>
-                        <div class="chart-bar"><div class="chart-fill" style="width: 40%;"></div></div>
-                        
-                        <div class="flex justify-between" style="font-size: 0.8rem; margin-bottom: 5px; margin-top: 10px;"><span>Feb</span><span>65%</span></div>
-                        <div class="chart-bar"><div class="chart-fill" style="width: 65%;"></div></div>
-                        
-                        <div class="flex justify-between" style="font-size: 0.8rem; margin-bottom: 5px; margin-top: 10px;"><span>Mar</span><span>85%</span></div>
-                        <div class="chart-bar"><div class="chart-fill" style="width: 85%;"></div></div>
+                    <h3>Monthly Growth</h3>
+                    <div class="mt-4">
+                        <div class="flex justify-between text-sm mb-1"><span>Jan</span><span>40%</span></div>
+                        <div class="chart-bar-container"><div class="chart-bar-fill" style="width: 40%"></div></div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex justify-between text-sm mb-1"><span>Feb</span><span>65%</span></div>
+                        <div class="chart-bar-container"><div class="chart-bar-fill" style="width: 65%"></div></div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex justify-between text-sm mb-1"><span>Mar</span><span>88%</span></div>
+                        <div class="chart-bar-container"><div class="chart-bar-fill" style="width: 88%"></div></div>
                     </div>
                 </div>
                 <div class="card">
-                    <h3 data-i18n="chart_types">Trip Types</h3>
-                    <div style="display: flex; justify-content: center; align-items: center; height: 150px;">
+                    <h3>Ride Types</h3>
+                    <div style="height: 150px; display: flex; align-items: center; justify-content: center; gap: 20px;">
                         <div style="width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(var(--primary) 0% 70%, var(--secondary) 70% 100%);"></div>
-                        <div style="margin-right: 1rem;">
-                            <div style="color: var(--primary);">■ Personal (70%)</div>
-                            <div style="color: var(--secondary);">■ Delivery (30%)</div>
+                        <div>
+                            <div style="color: var(--primary)">■ Personal (70%)</div>
+                            <div style="color: var(--secondary)">■ Delivery (30%)</div>
                         </div>
                     </div>
                 </div>
@@ -351,400 +339,386 @@
 
     </main>
 
-    <!-- FOOTER -->
-    <footer>
-        <div class="container text-center" style="padding: 2rem 0; color: var(--text-muted); font-size: 0.9rem;">
-            <p>&copy; 2025 Tuktuk Drive. All rights reserved.</p>
-            <div class="flex justify-center gap-2 mt-4" style="gap: 1rem;">
-                <a href="#" style="color: inherit;" data-i18n="link_about">About</a>
-                <a href="#" style="color: inherit;" data-i18n="link_privacy">Privacy</a>
-                <a href="#" style="color: inherit;" data-i18n="link_support">Support</a>
-            </div>
+    <footer class="text-center text-muted" style="padding: 2rem; border-top: 1px solid var(--border);">
+        <p>&copy; 2025 Tuktuk Drive - Prototype</p>
+        <div class="flex justify-center gap-4 mt-2">
+            <a href="#" data-i18n="lnk_about">About</a>
+            <a href="#" data-i18n="lnk_privacy">Privacy</a>
+            <a href="#" data-i18n="lnk_support">Support</a>
         </div>
     </footer>
 
+    <!-- =================================================================
+         JAVASCRIPT: OFFLINE-FIRST ARCHITECTURE & LOGIC
+         ================================================================= -->
     <script>
-        /**
-         * Tuktuk Drive - Prototype Logic
-         */
-        const app = {
-            // --- State ---
-            data: {
-                lang: 'ar',
-                theme: 'light',
-                currentUserRole: null,
-                activeRide: null, // { driverId, type, status: 'pending'|'active'|'proof_done'|'completed' }
-                drivers: [
-                    { id: 1, name: 'Sayed Turbo', vehicle: 'Bajaj 2024', status: 'free', rating: 4.9 },
-                    { id: 2, name: 'Mahmoud King', vehicle: 'Piaggio', status: 'busy', rating: 4.5 },
-                    { id: 3, name: 'Hassan Fox', vehicle: 'TVS Cargo', status: 'free', rating: 4.8 },
-                    { id: 4, name: 'Ali Prince', vehicle: 'Bajaj 2022', status: 'free', rating: 4.7 }
-                ],
-                driverEarnings: 150
+        // --- 1. IndexedDB Abstraction Layer (The "Mock" Backend) ---
+        const db = {
+            name: 'TuktukDB',
+            version: 1,
+            instance: null,
+
+            async open() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open(this.name, this.version);
+                    
+                    request.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        // Create Stores
+                        if (!db.objectStoreNames.contains('drivers')) {
+                            const store = db.createObjectStore('drivers', { keyPath: 'id' });
+                            // Seed Initial Data
+                            store.add({ id: 1, name: 'Sayed Turbo', vehicle: 'Bajaj 2024', status: 'free', rating: 4.9 });
+                            store.add({ id: 2, name: 'Mahmoud King', vehicle: 'Piaggio', status: 'busy', rating: 4.5 });
+                            store.add({ id: 3, name: 'Hassan Fox', vehicle: 'TVS Cargo', status: 'free', rating: 4.8 });
+                        }
+                        if (!db.objectStoreNames.contains('rides')) {
+                            db.createObjectStore('rides', { keyPath: 'id', autoIncrement: true });
+                        }
+                    };
+
+                    request.onsuccess = (e) => {
+                        this.instance = e.target.result;
+                        resolve(this.instance);
+                    };
+                    request.onerror = (e) => reject('DB Error');
+                });
             },
 
-            // --- Translations ---
-            i18n: {
+            async getAll(storeName) {
+                return new Promise((resolve) => {
+                    const tx = this.instance.transaction(storeName, 'readonly');
+                    const store = tx.objectStore(storeName);
+                    const req = store.getAll();
+                    req.onsuccess = () => resolve(req.result);
+                });
+            },
+
+            async put(storeName, data) {
+                return new Promise((resolve) => {
+                    const tx = this.instance.transaction(storeName, 'readwrite');
+                    const store = tx.objectStore(storeName);
+                    store.put(data);
+                    tx.oncomplete = () => resolve(true);
+                });
+            },
+
+            async clear(storeName) {
+                 // Helper for resetting demo
+                 const tx = this.instance.transaction(storeName, 'readwrite');
+                 tx.objectStore(storeName).clear();
+            },
+            
+            async seedData() {
+                // Reset Functionality for Admin
+                await this.put('drivers', { id: 1, name: 'Sayed Turbo', vehicle: 'Bajaj 2024', status: 'free', rating: 4.9 });
+                await this.put('drivers', { id: 2, name: 'Mahmoud King', vehicle: 'Piaggio', status: 'busy', rating: 4.5 });
+                await this.put('drivers', { id: 3, name: 'Hassan Fox', vehicle: 'TVS Cargo', status: 'free', rating: 4.8 });
+                alert("Data Reset!");
+                location.reload();
+            }
+        };
+
+        // --- 2. UI & Translation Logic ---
+        const ui = {
+            lang: 'ar',
+            theme: 'light',
+            
+            translations: {
                 ar: {
-                    welcome_title: "اختر نوع الحساب",
-                    welcome_sub: "نموذج تجريبي - لا يتطلب كلمة مرور",
-                    role_passenger: "راكب",
-                    role_driver: "سائق",
-                    role_admin: "مسؤول (Admin)",
-                    role_owner: "مالك (Owner)",
-                    desc_passenger: "حجز مشاوير وتوصيل",
-                    desc_driver: "استقبال طلبات",
-                    desc_admin: "إدارة العمليات",
-                    desc_owner: "تقارير الأعمال",
-                    logout: "خروج",
-                    hello: "أهلاً",
-                    book_ride: "حجز مشوار",
-                    opt_personal: "مشوار شخصي",
-                    opt_delivery: "توصيل بضاعة",
-                    avail_drivers: "السائقين المتاحين",
-                    active_trip: "الرحلة الحالية",
-                    no_active_trip: "لا توجد رحلة نشطة",
-                    step_driver_proof: "إثبات السائق",
-                    step_you_confirm: "تأكيدك",
-                    btn_confirm_receipt: "تأكيد الاستلام",
-                    current_job: "المهمة الحالية",
-                    waiting_jobs: "في انتظار طلبات...",
-                    btn_upload_proof: "رفع صورة التسليم",
-                    btn_end_trip: "إنهاء الرحلة",
-                    my_earnings: "أرباحي",
-                    dash_admin: "لوحة التحكم (Admin)",
-                    live_fleet: "حالة الأسطول",
-                    tbl_id: "م",
-                    tbl_name: "الاسم",
-                    tbl_vehicle: "المركبة",
-                    tbl_status: "الحالة",
-                    tbl_action: "إجراء",
-                    dash_owner: "نظرة عامة للمالك",
-                    kpi_revenue: "إجمالي الإيرادات",
-                    kpi_trips: "الرحلات",
-                    kpi_users: "المستخدمين",
-                    kpi_commission: "العمولة",
-                    chart_growth: "النمو الشهري",
-                    chart_types: "أنواع الرحلات",
-                    link_about: "عن التطبيق",
-                    link_privacy: "الخصوصية",
-                    link_support: "الدعم",
-                    status_free: "متاح",
-                    status_busy: "مشغول",
-                    ph_pickup: "مكان الانطلاق",
-                    ph_dest: "الوجهة"
+                    welcome_title: "نقل وتوصيل", welcome_sub: "اختر دورك للدخول (محاكاة)",
+                    role_passenger: "راكب", role_driver: "سائق", role_admin: "مسؤول", role_owner: "مالك",
+                    hello: "أهلاً", book_ride: "حجز مشوار", avail_drivers: "سائقين متاحين",
+                    active_ride: "المشوار الحالي", srv_personal: "مشوار شخصي", srv_delivery: "توصيل طلبات",
+                    current_req: "الطلب الحالي", earnings: "الأرباح", admin_dash: "لوحة المسؤول",
+                    driver_status: "حالة الأسطول", col_name: "الاسم", col_status: "الحالة", col_action: "إجراء",
+                    owner_dash: "نظرة عامة للمالك", ph_pickup: "مكان الانطلاق", ph_dest: "الوجهة",
+                    step_driver_proof: "إثبات السائق", step_user_confirm: "تأكيدك",
+                    lnk_about: "عن التطبيق", lnk_privacy: "الخصوصية", lnk_support: "الدعم"
                 },
                 en: {
-                    welcome_title: "Choose Your Role",
-                    welcome_sub: "Simulation Prototype - No Password Required",
-                    role_passenger: "Passenger",
-                    role_driver: "Driver",
-                    role_admin: "Admin",
-                    role_owner: "Owner",
-                    desc_passenger: "Book rides & delivery",
-                    desc_driver: "Accept jobs & earn",
-                    desc_admin: "Manage operations",
-                    desc_owner: "Business insights",
-                    logout: "Logout",
-                    hello: "Hello",
-                    book_ride: "Book a Ride",
-                    opt_personal: "Personal Ride",
-                    opt_delivery: "Goods Delivery",
-                    avail_drivers: "Available Drivers (Free)",
-                    active_trip: "Active Trip",
-                    no_active_trip: "No active trip.",
-                    step_driver_proof: "Driver Proof",
-                    step_you_confirm: "Your Confirm",
-                    btn_confirm_receipt: "Confirm Receipt",
-                    current_job: "Current Job",
-                    waiting_jobs: "Waiting for requests...",
-                    btn_upload_proof: "Upload Proof",
-                    btn_end_trip: "End Trip",
-                    my_earnings: "My Earnings",
-                    dash_admin: "Admin Dashboard",
-                    live_fleet: "Live Fleet Status",
-                    tbl_id: "ID",
-                    tbl_name: "Name",
-                    tbl_vehicle: "Vehicle",
-                    tbl_status: "Status",
-                    tbl_action: "Action",
-                    dash_owner: "Owner Overview",
-                    kpi_revenue: "Total Revenue",
-                    kpi_trips: "Total Trips",
-                    kpi_users: "Active Users",
-                    kpi_commission: "Net Commission",
-                    chart_growth: "Monthly Growth",
-                    chart_types: "Trip Types",
-                    link_about: "About",
-                    link_privacy: "Privacy",
-                    link_support: "Support",
-                    status_free: "Free",
-                    status_busy: "Busy",
-                    ph_pickup: "Pickup Location",
-                    ph_dest: "Destination"
+                    welcome_title: "Transport & Delivery", welcome_sub: "Select role to login (Simulation)",
+                    role_passenger: "Passenger", role_driver: "Driver", role_admin: "Admin", role_owner: "Owner",
+                    hello: "Hello", book_ride: "Book a Ride", avail_drivers: "Available Drivers",
+                    active_ride: "Active Ride", srv_personal: "Personal Ride", srv_delivery: "Goods Delivery",
+                    current_req: "Current Request", earnings: "Earnings", admin_dash: "Admin Dashboard",
+                    driver_status: "Fleet Status", col_name: "Name", col_status: "Status", col_action: "Action",
+                    owner_dash: "Owner Overview", ph_pickup: "Pickup Location", ph_dest: "Destination",
+                    step_driver_proof: "Driver Proof", step_user_confirm: "Your Confirm",
+                    lnk_about: "About", lnk_privacy: "Privacy", lnk_support: "Support"
                 }
             },
 
-            // --- Initialization ---
-            init() {
-                this.updateUI();
+            toggleTheme() {
+                this.theme = this.theme === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', this.theme);
             },
 
-            // --- Authentication & Navigation ---
-            login(role) {
-                this.data.currentUserRole = role;
+            toggleLang() {
+                this.lang = this.lang === 'ar' ? 'en' : 'ar';
+                document.documentElement.setAttribute('lang', this.lang);
+                document.documentElement.setAttribute('dir', this.lang === 'ar' ? 'rtl' : 'ltr');
+                document.getElementById('lang-display').innerText = this.lang === 'ar' ? 'EN' : 'عربي';
+                this.applyLang();
+            },
+
+            applyLang() {
+                const t = this.translations[this.lang];
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if(t[key]) el.innerText = t[key];
+                });
+                document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+                    const key = el.getAttribute('data-i18n-ph');
+                    if(t[key]) el.placeholder = t[key];
+                });
+            }
+        };
+
+        // --- 3. App Business Logic ---
+        const app = {
+            role: null,
+            activeRide: null, // Local state simulation
+
+            async init() {
+                await db.open();
+                this.checkSession();
+            },
+
+            checkSession() {
+                // Simple session check
+                if(this.role) this.router(this.role);
+                else this.router('landing');
+            },
+
+            router(view) {
+                document.querySelectorAll('main section').forEach(el => el.classList.add('hidden'));
+                document.getElementById(`view-${view}`).classList.remove('hidden');
                 
-                // Hide landing
-                document.getElementById('view-landing').classList.add('hidden');
-                document.getElementById('btn-logout').classList.remove('hidden');
+                const logoutBtn = document.getElementById('logout-btn');
+                if(view === 'landing') logoutBtn.classList.add('hidden');
+                else logoutBtn.classList.remove('hidden');
 
-                // Show Specific Dashboard
-                if(role === 'passenger') {
-                    this.renderPassengerDash();
-                    document.getElementById('view-passenger').classList.remove('hidden');
-                } else if(role === 'driver') {
-                    this.renderDriverDash();
-                    document.getElementById('view-driver').classList.remove('hidden');
-                } else if(role === 'admin') {
-                    this.renderAdminDash();
-                    document.getElementById('view-admin').classList.remove('hidden');
-                } else if(role === 'owner') {
-                    document.getElementById('view-owner').classList.remove('hidden');
-                }
+                if(view === 'passenger') this.loadPassengerView();
+                if(view === 'driver') this.loadDriverView();
+                if(view === 'admin') this.loadAdminView();
+                if(view === 'owner') this.loadOwnerView();
+            },
+
+            login(role) {
+                this.role = role;
+                this.router(role);
             },
 
             logout() {
-                this.data.currentUserRole = null;
-                // Hide all dashboards
-                ['view-passenger', 'view-driver', 'view-admin', 'view-owner'].forEach(id => {
-                    document.getElementById(id).classList.add('hidden');
-                });
-                // Show landing
-                document.getElementById('view-landing').classList.remove('hidden');
-                document.getElementById('btn-logout').classList.add('hidden');
+                this.role = null;
+                this.router('landing');
+            },
+            
+            goHome() {
+                if(this.role) this.router(this.role);
+                else this.router('landing');
             },
 
             // --- Passenger Logic ---
-            renderPassengerDash() {
-                const list = document.getElementById('driver-list');
-                list.innerHTML = '';
+            async loadPassengerView() {
+                const drivers = await db.getAll('drivers');
+                const listContainer = document.getElementById('p-driver-list');
+                listContainer.innerHTML = '';
 
-                // Filter for Free drivers
-                const freeDrivers = this.data.drivers.filter(d => d.status === 'free');
-                
+                const freeDrivers = drivers.filter(d => d.status === 'free');
+
                 if(freeDrivers.length === 0) {
-                    list.innerHTML = '<div style="padding:1rem; text-align:center; opacity:0.7">No drivers available.</div>';
+                    listContainer.innerHTML = '<div class="text-muted text-center">No drivers nearby.</div>';
                 } else {
                     freeDrivers.forEach(d => {
-                        const div = document.createElement('div');
-                        div.className = 'driver-row';
-                        div.innerHTML = `
-                            <div>
-                                <strong>${d.name}</strong>
-                                <div style="font-size:0.8rem; color:var(--text-muted)">${d.vehicle} • ★${d.rating}</div>
-                            </div>
-                            <button class="btn btn-primary btn-sm" onclick="app.bookDriver(${d.id})">
-                                ${this.data.lang === 'ar' ? 'حجز' : 'Book'}
-                            </button>
+                        const btn = document.createElement('button');
+                        btn.className = 'btn btn-outline w-full';
+                        btn.style.justifyContent = 'space-between';
+                        btn.innerHTML = `
+                            <span>${d.name} (${d.vehicle})</span>
+                            <span class="badge free">Free</span>
                         `;
-                        list.appendChild(div);
+                        btn.onclick = () => this.bookRide(d.id);
+                        listContainer.appendChild(btn);
                     });
                 }
-
-                // Update Active Ride Panel
-                const activePanel = document.getElementById('passenger-active-panel');
-                if(this.data.activeRide) {
-                    activePanel.style.opacity = '1';
-                    activePanel.style.pointerEvents = 'all';
-                    document.getElementById('passenger-status-msg').innerHTML = `
-                        <div style="color:var(--primary); font-weight:bold; margin-bottom:0.5rem;">Driver En Route</div>
-                        <div>Your ride with ID #${this.data.activeRide.driverId} is active.</div>
-                    `;
-                    
-                    // Show delivery protocol if applicable
-                    const protocol = document.getElementById('delivery-protocol-ui');
-                    if(this.data.activeRide.type === 'delivery') {
-                        protocol.classList.remove('hidden');
-                        const proofStep = document.getElementById('chk-driver-proof');
-                        const confirmBtn = document.getElementById('btn-user-confirm');
-
-                        if(this.data.activeRide.status === 'proof_done') {
-                            proofStep.classList.add('done');
-                            confirmBtn.disabled = false;
-                        } else {
-                            proofStep.classList.remove('done');
-                            confirmBtn.disabled = true;
-                        }
-                    } else {
-                        protocol.classList.add('hidden');
-                    }
-                } else {
-                    activePanel.style.opacity = '0.5';
-                    activePanel.style.pointerEvents = 'none';
-                    document.getElementById('passenger-status-msg').innerText = this.i18n[this.data.lang].no_active_trip;
-                    document.getElementById('delivery-protocol-ui').classList.add('hidden');
-                }
+                
+                this.renderPassengerActiveRide();
             },
 
-            bookDriver(driverId) {
-                const srvType = document.getElementById('service-type').value;
+            async bookRide(driverId) {
+                const type = document.getElementById('p-service-type').value;
+                const dest = document.getElementById('p-dest').value || 'Unknown';
                 
-                // Set Driver to Busy
-                const driverIdx = this.data.drivers.findIndex(d => d.id === driverId);
-                this.data.drivers[driverIdx].status = 'busy';
+                // 1. Update Driver Status in DB
+                const drivers = await db.getAll('drivers');
+                const driver = drivers.find(d => d.id === driverId);
+                driver.status = 'busy';
+                await db.put('drivers', driver);
 
-                // Set Active Ride
-                this.data.activeRide = {
-                    driverId: driverId,
-                    type: srvType,
-                    status: 'active'
+                // 2. Set Local Active Ride State
+                this.activeRide = {
+                    driverId: driver.id,
+                    driverName: driver.name,
+                    vehicle: driver.vehicle,
+                    type: type,
+                    dest: dest,
+                    status: 'active', // active, proof_uploaded, completed
+                    proof: false,
+                    confirmed: false
                 };
 
-                alert(this.data.lang === 'ar' ? "تم إرسال الطلب للسائق!" : "Request sent to driver!");
-                this.renderPassengerDash();
+                this.loadPassengerView(); // Refresh UI
             },
 
-            passengerConfirmReceipt() {
-                if(confirm("Confirm receipt?")) {
-                    this.completeSystemRide();
+            renderPassengerActiveRide() {
+                const panel = document.getElementById('p-active-ride-panel');
+                const noRide = document.getElementById('p-no-ride');
+                const info = document.getElementById('p-ride-info');
+                const deliveryFlow = document.getElementById('p-delivery-flow');
+                
+                if (!this.activeRide) {
+                    noRide.classList.remove('hidden');
+                    info.classList.add('hidden');
+                    return;
                 }
+
+                noRide.classList.add('hidden');
+                info.classList.remove('hidden');
+                
+                document.getElementById('p-ride-driver').innerText = this.activeRide.driverName;
+                document.getElementById('p-ride-vehicle').innerText = this.activeRide.vehicle;
+
+                if(this.activeRide.type === 'delivery') {
+                    deliveryFlow.classList.remove('hidden');
+                    
+                    // Check Steps
+                    const stepProof = document.getElementById('step-driver-proof');
+                    const stepUser = document.getElementById('step-user-confirm');
+                    const btn = document.getElementById('p-btn-confirm');
+
+                    if(this.activeRide.proof) stepProof.classList.add('done');
+                    else stepProof.classList.remove('done');
+
+                    if(this.activeRide.confirmed) stepUser.classList.add('done');
+                    
+                    btn.disabled = !this.activeRide.proof; // User can only confirm after driver proof
+                } else {
+                    deliveryFlow.classList.add('hidden');
+                }
+            },
+
+            passengerConfirm() {
+                this.activeRide.confirmed = true;
+                this.renderPassengerActiveRide();
+                // In real app, notify driver
             },
 
             // --- Driver Logic ---
-            renderDriverDash() {
-                // In a real app, we'd check if the logged-in driver has the active ride.
-                // For prototype, we assume Driver #1 (Sayed) is the logged-in user if Active Ride exists with ID 1.
-                
-                // Assuming logged in as ID 1 for demo
-                const driverId = 1;
-                const myStatus = this.data.drivers.find(d => d.id === driverId).status;
-                
-                const badge = document.getElementById('driver-status-badge');
-                badge.innerText = myStatus === 'free' ? this.i18n[this.data.lang].status_free : this.i18n[this.data.lang].status_busy;
-                badge.className = myStatus === 'free' ? 'badge badge-free' : 'badge badge-busy';
-                
-                document.getElementById('driver-earnings').innerText = this.data.driverEarnings;
+            async loadDriverView() {
+                // Simulate "My Driver ID is 1 (Sayed)"
+                const myId = 1; 
+                const drivers = await db.getAll('drivers');
+                const me = drivers.find(d => d.id === myId);
 
-                const jobArea = document.getElementById('driver-job-area');
-                const controls = document.getElementById('driver-active-controls');
-                const btnProof = document.getElementById('btn-driver-proof');
+                // Update Badge
+                const badge = document.getElementById('d-status-badge');
+                badge.innerText = me.status;
+                badge.className = `badge ${me.status}`;
 
-                // If there is an active ride assigned to this driver logic (simulated by global activeRide)
-                if(this.data.activeRide && this.data.activeRide.driverId === driverId) {
-                    jobArea.classList.add('hidden');
-                    controls.classList.remove('hidden');
-                    document.getElementById('job-type').innerText = this.data.activeRide.type;
+                // Check if I have a job (from shared state activeRide for demo)
+                const noReq = document.getElementById('d-no-req');
+                const info = document.getElementById('d-req-info');
 
-                    if(this.data.activeRide.type === 'delivery') {
-                        btnProof.classList.remove('hidden');
-                        if(this.data.activeRide.status === 'proof_done') {
-                            btnProof.innerText = "✔ Proof Sent";
-                            btnProof.disabled = true;
+                if (this.activeRide && this.activeRide.driverId === myId) {
+                    noReq.classList.add('hidden');
+                    info.classList.remove('hidden');
+                    
+                    document.getElementById('d-req-type').innerText = this.activeRide.type;
+                    document.getElementById('d-req-dest').innerText = this.activeRide.dest;
+                    
+                    const delActions = document.getElementById('d-delivery-actions');
+                    const btnProof = document.getElementById('d-btn-proof');
+                    const btnComp = document.getElementById('d-btn-complete');
+                    const waitMsg = document.getElementById('d-wait-msg');
+
+                    if (this.activeRide.type === 'delivery') {
+                        delActions.classList.remove('hidden');
+                        
+                        if(this.activeRide.proof) {
+                            btnProof.classList.add('hidden');
+                            if(this.activeRide.confirmed) {
+                                waitMsg.classList.add('hidden');
+                                btnComp.classList.remove('hidden');
+                            } else {
+                                waitMsg.classList.remove('hidden');
+                                btnComp.classList.add('hidden'); // Cannot complete until user confirms
+                            }
                         } else {
-                            btnProof.innerText = "📷 Upload Proof";
-                            btnProof.disabled = false;
+                            btnProof.classList.remove('hidden');
+                            waitMsg.classList.add('hidden');
+                            btnComp.classList.add('hidden');
                         }
                     } else {
-                        btnProof.classList.add('hidden');
+                        delActions.classList.add('hidden');
+                        btnComp.classList.remove('hidden');
                     }
-
                 } else {
-                    jobArea.classList.remove('hidden');
-                    controls.classList.add('hidden');
+                    noReq.classList.remove('hidden');
+                    info.classList.add('hidden');
                 }
             },
 
             driverUploadProof() {
-                // Simulate upload
-                this.data.activeRide.status = 'proof_done';
-                this.renderDriverDash();
-                alert("Proof uploaded. Waiting for user confirmation.");
+                this.activeRide.proof = true;
+                this.loadDriverView();
             },
 
-            driverCompleteRide() {
-                this.completeSystemRide();
-            },
+            async driverComplete() {
+                // 1. Reset Driver Status in DB
+                const drivers = await db.getAll('drivers');
+                const me = drivers.find(d => d.id === 1);
+                me.status = 'free';
+                await db.put('drivers', me);
 
-            completeSystemRide() {
-                // Reset Logic
-                const dId = this.data.activeRide.driverId;
-                const dIdx = this.data.drivers.findIndex(d => d.id === dId);
-                this.data.drivers[dIdx].status = 'free'; // Set back to free
+                // 2. Clear Ride
+                this.activeRide = null;
                 
-                this.data.driverEarnings += 50; // Add dummy money
-                this.data.activeRide = null; // Clear ride
-
-                alert(this.data.lang === 'ar' ? "تم إنهاء الرحلة" : "Ride Completed");
-                
-                // Re-render current view
-                if(this.data.currentUserRole === 'driver') this.renderDriverDash();
-                if(this.data.currentUserRole === 'passenger') this.renderPassengerDash();
+                alert("Trip Completed! Earnings updated.");
+                this.loadDriverView();
             },
-
 
             // --- Admin Logic ---
-            renderAdminDash() {
-                const tbody = document.getElementById('admin-fleet-list');
+            async loadAdminView() {
+                const drivers = await db.getAll('drivers');
+                const tbody = document.getElementById('a-driver-table');
                 tbody.innerHTML = '';
-                this.data.drivers.forEach(d => {
-                    const tr = document.createElement('tr');
-                    tr.style.borderBottom = '1px solid var(--border)';
-                    const statusClass = d.status === 'free' ? 'badge-free' : 'badge-busy';
-                    const statusText = d.status === 'free' ? this.i18n[this.data.lang].status_free : this.i18n[this.data.lang].status_busy;
-                    
-                    tr.innerHTML = `
-                        <td style="padding:1rem;">#${d.id}</td>
-                        <td>${d.name}</td>
-                        <td>${d.vehicle}</td>
-                        <td><span class="badge ${statusClass}">${statusText}</span></td>
-                        <td><button class="btn btn-outline" style="padding:0.25rem 0.5rem; font-size:0.7rem">Edit</button></td>
+
+                drivers.forEach(d => {
+                    const row = document.createElement('tr');
+                    row.style.borderBottom = '1px solid var(--border)';
+                    row.innerHTML = `
+                        <td class="p-2">#${d.id}</td>
+                        <td class="p-2">${d.name}</td>
+                        <td class="p-2"><span class="badge ${d.status}">${d.status}</span></td>
+                        <td class="p-2"><button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.7rem">Edit</button></td>
                     `;
-                    tbody.appendChild(tr);
+                    tbody.appendChild(row);
                 });
             },
 
-            // --- Utils ---
-            toggleTheme() {
-                this.data.theme = this.data.theme === 'light' ? 'dark' : 'light';
-                document.documentElement.setAttribute('data-theme', this.data.theme);
-            },
-
-            toggleLang() {
-                this.data.lang = this.data.lang === 'ar' ? 'en' : 'ar';
-                document.documentElement.setAttribute('lang', this.data.lang);
-                document.documentElement.setAttribute('dir', this.data.lang === 'ar' ? 'rtl' : 'ltr');
-                document.getElementById('lang-disp').innerText = this.data.lang === 'ar' ? 'EN' : 'عربي';
-                this.updateUI();
-            },
-
-            updateUI() {
-                const t = this.i18n[this.data.lang];
-                document.querySelectorAll('[data-i18n]').forEach(el => {
-                    el.innerText = t[el.getAttribute('data-i18n')];
-                });
-                document.querySelectorAll('[data-i18n-ph]').forEach(el => {
-                    el.placeholder = t[el.getAttribute('data-i18n-ph')];
-                });
-                // Refresh current view if needed
-                if(this.data.currentUserRole === 'passenger') this.renderPassengerDash();
-                if(this.data.currentUserRole === 'driver') this.renderDriverDash();
-                if(this.data.currentUserRole === 'admin') this.renderAdminDash();
-            },
-
-            toggleServiceType() {
-                // Just re-render or handle UI toggles if needed
+            // --- Owner Logic ---
+            loadOwnerView() {
+                // Static charts in HTML, logic could update numbers here
             }
         };
 
         // Initialize
-        document.addEventListener('DOMContentLoaded', () => app.init());
-        
-        // Add Spin Animation
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        `;
-        document.head.appendChild(style);
+        window.addEventListener('DOMContentLoaded', () => {
+            app.init();
+            ui.applyLang();
+        });
     </script>
 </body>
 </html>
