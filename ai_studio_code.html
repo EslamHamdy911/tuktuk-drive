@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tuktuk Drive - Cloud Storage and Ride Hailing for Egypt">
+    <meta property="og:title" content="Tuktuk Drive">
+    <meta property="og:description" content="Your Files and Rides in One Place. Fast, secure, and local.">
+    <title>Tuktuk Drive | توكتوك درايف</title>
+
+    <style>
+        /* =========================================
+           CSS VARIABLES & THEME SETUP
+           ========================================= */
+        :root {
+            /* Brand Colors */
+            --primary: #7C3AED;      /* Electric Purple */
+            --primary-hover: #6D28D9;
+            --secondary: #06B6D4;    /* Turquoise */
+            --accent: #FACC15;       /* Energetic Yellow */
+            --danger: #EF4444;
+            --success: #10B981;
+            
+            /* Light Theme Defaults */
+            --bg-body: #F3F4F6;
+            --bg-card: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+            --border-color: #E5E7EB;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            
+            /* Layout */
+            --radius: 12px;
+            --max-width: 1200px;
+        }
+
+        /* Dark Theme Overrides */
+        [data-theme="dark"] {
+            --bg-body: #111827;
+            --bg-card: #1F2937;
+            --text-main: #F9FAFB;
+            --text-muted: #9CA3AF;
+            --border-color: #374151;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        }
+
+        /* =========================================
+           RESET & BASE STYLES
+           ========================================= */
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.3s, color 0.3s; }
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Cairo", sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-body); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+        /* Utilities */
+        .container { max-width: var(--max-width); margin: 0 auto; padding: 0 1.5rem; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .grid { display: grid; gap: 1.5rem; }
+        .hidden { display: none !important; }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0.75rem 1.5rem; border-radius: 9999px; font-weight: 600;
+            border: none; cursor: pointer; transition: transform 0.1s, box-shadow 0.2s;
+            gap: 0.5rem; font-size: 1rem;
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 14px 0 rgba(124, 58, 237, 0.39); }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-secondary { background: var(--secondary); color: white; }
+        .btn-outline { border: 2px solid var(--border-color); background: transparent; color: var(--text-main); }
+        .btn-accent { background: var(--accent); color: #000; }
+        
+        /* =========================================
+           HEADER & NAV
+           ========================================= */
+        header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky; top: 0; z-index: 50;
+            padding: 1rem 0;
+        }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
+        .logo span { color: var(--secondary); }
+        
+        .nav-controls { gap: 0.5rem; }
+        .icon-btn {
+            background: transparent; border: none; color: var(--text-main);
+            padding: 0.5rem; border-radius: 50%; cursor: pointer;
+        }
+        .icon-btn:hover { background: rgba(0,0,0,0.05); }
+
+        /* =========================================
+           HERO SECTION
+           ========================================= */
+        .hero {
+            padding: 4rem 0; text-align: center;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border-bottom-left-radius: 3rem; border-bottom-right-radius: 3rem;
+            margin-bottom: 2rem;
+        }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; line-height: 1.2; }
+        .hero p { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .badge {
+            background: var(--accent); color: black; padding: 0.25rem 0.75rem;
+            border-radius: 99px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase;
+            display: inline-block; margin-bottom: 1rem;
+        }
+
+        /* =========================================
+           MAIN TABS
+           ========================================= */
+        .app-tabs { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
+        .tab-btn {
+            padding: 0.75rem 2rem; background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: var(--radius); cursor: pointer; font-weight: bold; color: var(--text-muted);
+            box-shadow: var(--shadow-sm);
+        }
+        .tab-btn.active {
+            background: var(--primary); color: white; border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* =========================================
+           CLOUD STORAGE SECTION
+           ========================================= */
+        .storage-card {
+            background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+        }
+        .storage-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .progress-container { margin: 1rem 0; }
+        .progress-bar {
+            width: 100%; height: 10px; background: var(--border-color); border-radius: 5px; overflow: hidden;
+        }
+        .progress-fill { height: 100%; background: var(--secondary); width: 45%; transition: width 1s ease; }
+        
+        .file-list { list-style: none; }
+        .file-item {
+            display: flex; align-items: center; padding: 1rem; border-bottom: 1px solid var(--border-color);
+            cursor: pointer; transition: background 0.2s;
+        }
+        .file-item:last-child { border-bottom: none; }
+        .file-item:hover { background: rgba(0,0,0,0.02); }
+        .file-icon { width: 40px; height: 40px; background: rgba(124, 58, 237, 0.1); color: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-inline-end: 1rem; }
+        .file-info { flex: 1; }
+        .file-name { font-weight: 600; display: block; }
+        .file-meta { font-size: 0.85rem; color: var(--text-muted); }
+        
+        /* =========================================
+           RIDE BOOKING SECTION
+           ========================================= */
+        .ride-layout { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        @media(min-width: 768px) { .ride-layout { grid-template-columns: 1fr 1fr; } }
+
+        .map-container {
+            background: #e5e7eb; height: 300px; border-radius: var(--radius);
+            position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
+        }
+        canvas#mapCanvas { width: 100%; height: 100%; }
+        
+        .booking-form input, .booking-form select {
+            width: 100%; padding: 1rem; margin-bottom: 1rem;
+            background: var(--bg-body); border: 1px solid var(--border-color);
+            border-radius: var(--radius); color: var(--text-main);
+        }
+        .vehicle-options { display: flex; gap: 1rem; margin-bottom: 1rem; overflow-x: auto; padding-bottom: 0.5rem; }
+        .vehicle-card {
+            border: 2px solid var(--border-color); padding: 1rem; border-radius: var(--radius);
+            min-width: 100px; text-align: center; cursor: pointer;
+        }
+        .vehicle-card.selected { border-color: var(--primary); background: rgba(124, 58, 237, 0.05); }
+        
+        .driver-list { margin-top: 1.5rem; }
+        .driver-card {
+            display: flex; align-items: center; background: var(--bg-body);
+            padding: 1rem; border-radius: var(--radius); margin-bottom: 0.5rem;
+            justify-content: space-between; border: 1px solid var(--border-color);
+        }
+
+        /* =========================================
+           DASHBOARD SECTION
+           ========================================= */
+        .dashboard-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;
+        }
+        .stat-card { background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+        .payment-method { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; padding: 1rem; border: 1px solid var(--border-color); border-radius: var(--radius); }
+        
+        /* =========================================
+           LOCAL AVAILABILITY & FOOTER
+           ========================================= */
+        .availability-bar {
+            background: var(--bg-card); padding: 1rem; margin-top: 2rem;
+            border-radius: var(--radius); display: flex; justify-content: space-between; align-items: center;
+            border-left: 5px solid var(--success);
+        }
+        
+        footer {
+            margin-top: 4rem; padding: 3rem 0; background: var(--bg-card);
+            border-top: 1px solid var(--border-color); text-align: center; color: var(--text-muted);
+        }
+        .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-main); text-decoration: none; }
+
+        /* =========================================
+           TOAST NOTIFICATION
+           ========================================= */
+        .toast-container {
+            position: fixed; bottom: 2rem; right: 2rem; left: 2rem; z-index: 100;
+            pointer-events: none; display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;
+        }
+        [dir="rtl"] .toast-container { align-items: flex-start; }
+        .toast {
+            background: var(--text-main); color: var(--bg-card); padding: 0.75rem 1.5rem;
+            border-radius: 8px; box-shadow: var(--shadow-lg); opacity: 0; transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); pointer-events: auto;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+
+        /* Icons CSS replacement for no-library requirement */
+        .svg-icon { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container flex justify-between items-center">
+            <div class="logo">
+                <svg class="svg-icon" viewBox="0 0 24 24" style="color:var(--primary)">
+                    <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
+                    <circle cx="7" cy="17" r="2" />
+                    <path d="M9 17h6" />
+                    <circle cx="17" cy="17" r="2" />
+                </svg>
+                Tuktuk<span>Drive</span>
+            </div>
+            
+            <nav class="flex nav-controls">
+                <button class="icon-btn" onclick="app.toggleTheme()" aria-label="Toggle Theme">
+                    <!-- Moon/Sun Icon logic handled in JS or generic SVG -->
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+                <button class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" onclick="app.toggleLang()">
+                    <span id="lang-display">EN</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <span class="badge" data-i18n="beta_badge">Beta - Prototype</span>
+                <h1 data-i18n="hero_title">Your Files and Rides in One Place</h1>
+                <p data-i18n="hero_sub">Upload, share, and book tuk-tuks instantly. Fast, secure, and made for Egypt.</p>
+                <div class="flex justify-center" style="gap: 1rem; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="app.switchTab('cloud')" data-i18n="btn_upload">Upload File</button>
+                    <button class="btn btn-secondary" onclick="app.switchTab('ride')" data-i18n="btn_book">Book a Ride</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- App Tabs -->
+        <div class="container">
+            <div class="app-tabs">
+                <button class="tab-btn active" onclick="app.switchTab('cloud')" id="tab-cloud" data-i18n="tab_files">My Files</button>
+                <button class="tab-btn" onclick="app.switchTab('ride')" id="tab-ride" data-i18n="tab_rides">Ride Booking</button>
+                <button class="tab-btn" onclick="app.switchTab('dashboard')" id="tab-dashboard" data-i18n="tab_dash">Dashboard</button>
+            </div>
+        </div>
+
+        <!-- SECTION: CLOUD STORAGE -->
+        <section id="section-cloud" class="container">
+            <div class="storage-card">
+                <div class="storage-header">
+                    <h2 data-i18n="cloud_title">Your Drive</h2>
+                    <button class="btn btn-primary" onclick="app.uploadSim()" data-i18n="action_upload">+ New</button>
+                </div>
+
+                <div class="progress-container">
+                    <div class="flex justify-between" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                        <span data-i18n="storage_used">4.5 GB used</span>
+                        <span data-i18n="storage_total">10 GB total</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 45%"></div></div>
+                </div>
+
+                <ul class="file-list" id="file-list-container">
+                    <!-- Files injected via JS -->
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECTION: RIDE BOOKING -->
+        <section id="section-ride" class="container hidden">
+            <div class="ride-layout">
+                <!-- Left: Form -->
+                <div>
+                    <div class="storage-card">
+                        <h2 style="margin-bottom: 1rem;" data-i18n="ride_title">Where to?</h2>
+                        <div class="booking-form">
+                            <select id="pickup-loc">
+                                <option value="Nasr City" data-i18n="loc_nasr">Nasr City</option>
+                                <option value="Mansoura" data-i18n="loc_man">Mansoura</option>
+                                <option value="Talkha" data-i18n="loc_tal">Talkha</option>
+                                <option value="Current Location" selected data-i18n="loc_curr">Current Location (GPS)</option>
+                            </select>
+                            <input type="text" placeholder="Destination (e.g. The Club, Market)" id="dest-input">
+                            
+                            <label style="display:block; margin-bottom: 0.5rem; font-weight:600;" data-i18n="select_type">Tuk-tuk Type</label>
+                            <div class="vehicle-options">
+                                <div class="vehicle-card selected" onclick="app.selectVehicle(this, 'standard')">
+                                    <div style="font-size:1.5rem;">🛺</div>
+                                    <div style="font-size:0.8rem; font-weight:bold">Standard</div>
+                                    <div style="font-size:0.7rem; color: var(--text-muted)">10 EGP</div>
+                                </div>
+                                <div class="vehicle-card" onclick="app.selectVehicle(this, 'covered')">
+                                    <div style="font-size:1.5rem;">☔</div>
+                                    <div style="font-size:0.8rem; font-weight:bold">Covered</div>
+                                    <div style="font-size:0.7rem; color: var(--text-muted)">15 EGP</div>
+                                </div>
+                                <div class="vehicle-card" onclick="app.selectVehicle(this, 'cargo')">
+                                    <div style="font-size:1.5rem;">📦</div>
+                                    <div style="font-size:0.8rem; font-weight:bold">Cargo</div>
+                                    <div style="font-size:0.7rem; color: var(--text-muted)">20 EGP</div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary" style="width: 100%" onclick="app.searchDrivers()" data-i18n="btn_find_driver">Find Driver</button>
+                        </div>
+                        
+                        <div id="driver-results" class="hidden driver-list">
+                            <!-- Results injected via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Map -->
+                <div class="map-container">
+                    <canvas id="mapCanvas"></canvas>
+                    <div style="position: absolute; bottom: 10px; left: 10px; background: rgba(255,255,255,0.8); padding: 5px 10px; border-radius: 5px; font-size: 0.7rem; color: black;">
+                        Live Map Simulation
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: DASHBOARD -->
+        <section id="section-dashboard" class="container hidden">
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <h3 data-i18n="dash_balance">Wallet Balance</h3>
+                    <div style="font-size: 2rem; font-weight: 800; color: var(--primary); margin: 0.5rem 0;">150.00 EGP</div>
+                    <button class="btn btn-outline btn-sm" data-i18n="btn_topup">Top Up</button>
+                </div>
+                
+                <div class="stat-card">
+                    <h3 data-i18n="dash_payment">Payment Methods</h3>
+                    <div class="payment-method">
+                        <div style="background: #E60000; color: white; padding: 5px; font-weight: bold; border-radius: 4px; font-size: 0.7rem;">VF</div>
+                        <span>Vodafone Cash (**09)</span>
+                    </div>
+                    <div class="payment-method">
+                        <div style="background: #003087; color: white; padding: 5px; font-weight: bold; border-radius: 4px; font-size: 0.7rem;">PP</div>
+                        <span>PayPal</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="storage-card" style="margin-top: 1.5rem;">
+                <h3 style="margin-bottom: 1rem;" data-i18n="dash_history">Recent Activity</h3>
+                <ul class="file-list" id="activity-list">
+                    <!-- Activity injected -->
+                </ul>
+            </div>
+        </section>
+
+        <!-- Local Availability Banner -->
+        <div class="container">
+            <div class="availability-bar">
+                <div>
+                    <strong data-i18n="avail_text">Tuk-tuks available near you:</strong>
+                    <span id="tuktuk-count" style="font-weight: 800; color: var(--primary); font-size: 1.2rem; margin-inline-start: 0.5rem;">12</span>
+                </div>
+                <button class="icon-btn" onclick="app.refreshCount()" title="Refresh">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M23 4v6h-6"></path><path d="M1 20v-6h6"></path><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#" data-i18n="link_about">About</a>
+                <a href="#" data-i18n="link_support">Support</a>
+                <a href="#" data-i18n="link_privacy">Privacy Policy</a>
+                <a href="#" data-i18n="link_safety">Safety Tips</a>
+            </div>
+            <p>&copy; 2025 Tuktuk Drive. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+        /**
+         * Tuktuk Drive Application Logic
+         * Handles State, Translations, Animations, and DOM Manipulation
+         */
+        const app = {
+            state: {
+                lang: 'ar', // Default Arabic
+                theme: 'light',
+                activeTab: 'cloud',
+                files: [
+                    { name: 'Invoice_Oct.pdf', date: '2025-10-21', size: '2.4 MB', type: 'pdf' },
+                    { name: 'Cairo_Trip_Photos.zip', date: '2025-10-20', size: '145 MB', type: 'zip' },
+                    { name: 'University_Project.docx', date: '2025-10-18', size: '500 KB', type: 'doc' }
+                ],
+                drivers: [
+                    { name: 'Sayed Turbo', rating: '4.9', car: 'Bajaj 2024', eta: '2 min', price: '15 EGP' },
+                    { name: 'Mahmoud El-Prince', rating: '4.7', car: 'Piaggio', eta: '5 min', price: '12 EGP' },
+                    { name: 'Hassan Music', rating: '4.8', car: 'TVS King', eta: '7 min', price: '10 EGP' }
+                ],
+                activity: [
+                    { text: 'Ride completed with Sayed', time: 'Yesterday' },
+                    { text: 'Uploaded Invoice_Oct.pdf', time: '2 days ago' }
+                ]
+            },
+
+            // Translations Dictionary
+            i18n: {
+                en: {
+                    beta_badge: "Beta — Your feedback matters",
+                    hero_title: "Your Files and Rides in One Place",
+                    hero_sub: "Upload, share, and book tuk-tuks instantly. Fast, secure, and local.",
+                    btn_upload: "Upload File",
+                    btn_book: "Book a Ride",
+                    tab_files: "My Files",
+                    tab_rides: "Ride Booking",
+                    tab_dash: "Dashboard",
+                    cloud_title: "Your Drive",
+                    action_upload: "+ New",
+                    storage_used: "4.5 GB used",
+                    storage_total: "10 GB total",
+                    ride_title: "Where to?",
+                    loc_nasr: "Nasr City",
+                    loc_man: "Mansoura",
+                    loc_tal: "Talkha",
+                    loc_curr: "Current Location",
+                    select_type: "Tuk-tuk Type",
+                    btn_find_driver: "Find Driver",
+                    dash_balance: "Wallet Balance",
+                    btn_topup: "Top Up",
+                    dash_payment: "Payment Methods",
+                    dash_history: "Recent Activity",
+                    avail_text: "Tuk-tuks available near you:",
+                    link_about: "About",
+                    link_support: "Support",
+                    link_privacy: "Privacy Policy",
+                    link_safety: "Safety Tips",
+                    msg_uploaded: "File uploaded successfully!",
+                    msg_searching: "Searching for nearest tuk-tuk...",
+                    msg_booked: "Driver confirmed! Sayed is coming.",
+                    lbl_book_now: "Book Now"
+                },
+                ar: {
+                    beta_badge: "تجريبي — رأيك يهمنا",
+                    hero_title: "ملفاتك ومشاويرك في مكان واحد",
+                    hero_sub: "ارفع ملفاتك، شاركها، واحجز توكتوك فوراً. سريع، آمن، ومحلي.",
+                    btn_upload: "رفع ملف",
+                    btn_book: "احجز توصيلة",
+                    tab_files: "ملفاتي",
+                    tab_rides: "حجز توكتوك",
+                    tab_dash: "حسابي",
+                    cloud_title: "وحدة التخزين",
+                    action_upload: "+ جديد",
+                    storage_used: "٤.٥ جيجا مستخدمة",
+                    storage_total: "١٠ جيجا",
+                    ride_title: "رايح فين؟",
+                    loc_nasr: "مدينة نصر",
+                    loc_man: "المنصورة",
+                    loc_tal: "طلخا",
+                    loc_curr: "الموقع الحالي",
+                    select_type: "نوع التوكتوك",
+                    btn_find_driver: "بحث عن سائق",
+                    dash_balance: "رصيد المحفظة",
+                    btn_topup: "شحن رصيد",
+                    dash_payment: "طرق الدفع",
+                    dash_history: "النشاط الأخير",
+                    avail_text: "تكاتك متاحة بالقرب منك:",
+                    link_about: "عن التطبيق",
+                    link_support: "الدعم",
+                    link_privacy: "الخصوصية",
+                    link_safety: "إرشادات الأمان",
+                    msg_uploaded: "تم رفع الملف بنجاح!",
+                    msg_searching: "جاري البحث عن أقرب توكتوك...",
+                    msg_booked: "تم تأكيد السائق! سيد في الطريق إليك.",
+                    lbl_book_now: "احجز الآن"
+                }
+            },
+
+            // Initialization
+            init() {
+                this.applyLang();
+                this.renderFiles();
+                this.renderActivity();
+                this.startMapAnimation();
+                this.refreshCount();
+                
+                // Auto-refresh availability
+                setInterval(() => this.refreshCount(), 10000);
+            },
+
+            // --- Logic: Theming & Language ---
+
+            toggleTheme() {
+                this.state.theme = this.state.theme === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', this.state.theme);
+            },
+
+            toggleLang() {
+                this.state.lang = this.state.lang === 'ar' ? 'en' : 'ar';
+                document.documentElement.setAttribute('lang', this.state.lang);
+                document.documentElement.setAttribute('dir', this.state.lang === 'ar' ? 'rtl' : 'ltr');
+                document.getElementById('lang-display').innerText = this.state.lang === 'ar' ? 'EN' : 'عربي';
+                this.applyLang();
+            },
+
+            applyLang() {
+                const t = this.i18n[this.state.lang];
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (t[key]) el.innerText = t[key];
+                });
+            },
+
+            // --- Logic: Navigation ---
+
+            switchTab(tabId) {
+                // Hide all sections
+                document.getElementById('section-cloud').classList.add('hidden');
+                document.getElementById('section-ride').classList.add('hidden');
+                document.getElementById('section-dashboard').classList.add('hidden');
+                
+                // Show target
+                document.getElementById('section-' + tabId).classList.remove('hidden');
+
+                // Update Tab styles
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                document.getElementById('tab-' + tabId).classList.add('active');
+            },
+
+            // --- Logic: Cloud Storage ---
+
+            renderFiles() {
+                const container = document.getElementById('file-list-container');
+                container.innerHTML = '';
+                this.state.files.forEach(file => {
+                    const li = document.createElement('li');
+                    li.className = 'file-item';
+                    // Simple icon selection
+                    let iconPath = "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z polyline points='14 2 14 8 20 8'";
+                    if(file.type === 'zip') iconPath = "M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z polyline points='3.27 6.96 12 12.01 20.73 6.96 M12 22.08V12'";
+                    
+                    li.innerHTML = `
+                        <div class="file-icon">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="${iconPath}"></path></svg>
+                        </div>
+                        <div class="file-info">
+                            <span class="file-name">${file.name}</span>
+                            <span class="file-meta">${file.date} • ${file.size}</span>
+                        </div>
+                        <button class="icon-btn" style="opacity: 0.5">⋮</button>
+                    `;
+                    container.appendChild(li);
+                });
+            },
+
+            uploadSim() {
+                const btn = document.querySelector('[data-i18n="action_upload"]');
+                const originalText = btn.innerText;
+                btn.innerText = "...";
+                btn.disabled = true;
+
+                setTimeout(() => {
+                    const newFile = { name: `Scan_${Math.floor(Math.random()*1000)}.jpg`, date: 'Just now', size: '1.2 MB', type: 'img' };
+                    this.state.files.unshift(newFile);
+                    this.renderFiles();
+                    this.showToast(this.i18n[this.state.lang].msg_uploaded, 'success');
+                    
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }, 1500);
+            },
+
+            // --- Logic: Ride Booking ---
+
+            selectVehicle(el, type) {
+                document.querySelectorAll('.vehicle-card').forEach(c => c.classList.remove('selected'));
+                el.classList.add('selected');
+            },
+
+            searchDrivers() {
+                const resultsDiv = document.getElementById('driver-results');
+                resultsDiv.classList.remove('hidden');
+                resultsDiv.innerHTML = `<div style="padding:2rem; text-align:center; color:var(--primary);">
+                    <div class="spinner" style="animation: spin 1s linear infinite; display:inline-block; width:20px; height:20px; border:3px solid var(--primary); border-top-color:transparent; border-radius:50%;"></div>
+                    <p>${this.i18n[this.state.lang].msg_searching}</p>
+                </div>`;
+
+                // Simulate network delay
+                setTimeout(() => {
+                    resultsDiv.innerHTML = '';
+                    this.state.drivers.forEach(driver => {
+                        const card = document.createElement('div');
+                        card.className = 'driver-card';
+                        card.innerHTML = `
+                            <div class="flex items-center" style="gap:0.75rem">
+                                <div style="width:40px; height:40px; background:#ddd; border-radius:50%; display:flex; justify-content:center; align-items:center;">👤</div>
+                                <div>
+                                    <div style="font-weight:bold">${driver.name}</div>
+                                    <div style="font-size:0.8rem; color:var(--text-muted)">★ ${driver.rating} • ${driver.car}</div>
+                                </div>
+                            </div>
+                            <div style="text-align:end">
+                                <div style="font-weight:bold; font-size:1.1rem">${driver.price}</div>
+                                <button class="btn btn-primary" style="padding:0.25rem 1rem; font-size:0.8rem" onclick="app.bookDriver('${driver.name}')">
+                                    ${this.i18n[this.state.lang].lbl_book_now}
+                                </button>
+                            </div>
+                        `;
+                        resultsDiv.appendChild(card);
+                    });
+                }, 2000);
+            },
+
+            bookDriver(name) {
+                this.showToast(this.i18n[this.state.lang].msg_booked, 'success');
+                document.getElementById('driver-results').innerHTML = `
+                    <div style="background: #ecfdf5; padding:1rem; border-radius:8px; border:1px solid #10b981; color: #065f46; text-align:center;">
+                        <h3>✔ Confirmed</h3>
+                        <p>${name} is arriving in 3 minutes.</p>
+                        <button class="btn btn-outline" style="margin-top:1rem; background:white" onclick="app.switchTab('dashboard')">View in Dashboard</button>
+                    </div>
+                `;
+                
+                // Add to activity
+                this.state.activity.unshift({ text: `Ride booked with ${name}`, time: 'Just now' });
+                this.renderActivity();
+            },
+
+            // --- Logic: Dashboard & Activity ---
+
+            renderActivity() {
+                const list = document.getElementById('activity-list');
+                list.innerHTML = '';
+                this.state.activity.forEach(act => {
+                    const li = document.createElement('li');
+                    li.className = 'file-item';
+                    li.innerHTML = `
+                        <div class="file-info">
+                            <span class="file-name">${act.text}</span>
+                            <span class="file-meta">${act.time}</span>
+                        </div>
+                    `;
+                    list.appendChild(li);
+                });
+            },
+
+            // --- Utilities ---
+
+            refreshCount() {
+                const count = Math.floor(Math.random() * 15) + 3;
+                document.getElementById('tuktuk-count').innerText = count;
+            },
+
+            showToast(msg, type = 'info') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                if(type === 'success') toast.style.borderRight = "4px solid var(--success)";
+                toast.innerText = msg;
+                
+                container.appendChild(toast);
+                // Trigger reflow
+                void toast.offsetWidth; 
+                toast.classList.add('show');
+
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 400);
+                }, 3000);
+            },
+
+            // --- Canvas Map Animation ---
+            startMapAnimation() {
+                const canvas = document.getElementById('mapCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Set resolution
+                const dpr = window.devicePixelRatio || 1;
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                ctx.scale(dpr, dpr);
+                
+                const w = rect.width;
+                const h = rect.height;
+                
+                let particles = [];
+                // Create random Tuk-tuks
+                for(let i=0; i<5; i++) {
+                    particles.push({
+                        x: Math.random() * w,
+                        y: Math.random() * h,
+                        vx: (Math.random() - 0.5) * 2,
+                        vy: (Math.random() - 0.5) * 2
+                    });
+                }
+
+                function animate() {
+                    ctx.clearRect(0, 0, w, h);
+                    
+                    // Draw roads (simple grid)
+                    ctx.strokeStyle = '#cbd5e1';
+                    ctx.lineWidth = 10;
+                    ctx.beginPath();
+                    ctx.moveTo(w/2, 0); ctx.lineTo(w/2, h); // Vertical
+                    ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); // Horizontal
+                    ctx.stroke();
+
+                    // Draw user
+                    ctx.fillStyle = '#7C3AED'; // Primary
+                    ctx.beginPath();
+                    ctx.arc(w/2, h/2, 8, 0, Math.PI*2);
+                    ctx.fill();
+                    // Pulse effect
+                    ctx.strokeStyle = 'rgba(124, 58, 237, 0.3)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.arc(w/2, h/2, 20 + Math.sin(Date.now()/200)*5, 0, Math.PI*2);
+                    ctx.stroke();
+
+                    // Draw Tuk-tuks
+                    ctx.fillStyle = '#FACC15'; // Yellow
+                    particles.forEach(p => {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        
+                        // Bounce off walls
+                        if(p.x < 0 || p.x > w) p.vx *= -1;
+                        if(p.y < 0 || p.y > h) p.vy *= -1;
+
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, 5, 0, Math.PI*2);
+                        ctx.fill();
+                    });
+
+                    requestAnimationFrame(animate);
+                }
+                animate();
+            }
+        };
+
+        // Run App
+        document.addEventListener('DOMContentLoaded', () => app.init());
+
+        // Add spinner keyframes
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = `
+            @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        `;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>
