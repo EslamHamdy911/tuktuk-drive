@@ -1,0 +1,26 @@
+[
+  {
+    "sessionId": "SESS001",
+    "userId": "USR001",
+    "role": "user",
+    "status": "active",
+    "loginTime": "2025-11-22T22:30:00Z",
+    "logoutTime": null
+  },
+  {
+    "sessionId": "SESS002",
+    "userId": "DRV001",
+    "role": "driver",
+    "status": "active",
+    "loginTime": "2025-11-22T22:45:00Z",
+    "logoutTime": null
+  },
+  {
+    "sessionId": "SESS003",
+    "userId": "USR002",
+    "role": "user",
+    "status": "inactive",
+    "loginTime": "2025-11-21T20:00:00Z",
+    "logoutTime": "2025-11-21T21:15:00Z"
+  }
+]
