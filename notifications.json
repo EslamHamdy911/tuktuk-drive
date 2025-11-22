@@ -1,0 +1,16 @@
+[
+  {
+    "notificationId": "NTF001",
+    "recipientId": "USR001",
+    "role": "user",
+    "message": "رحلتك مع سيد اكتملت بنجاح ✅",
+    "status": "read"
+  },
+  {
+    "notificationId": "NTF002",
+    "recipientId": "DRV002",
+    "role": "driver",
+    "message": "تم قبول طلب توصيل البضاعة 🚚",
+    "status": "unread"
+  }
+]
