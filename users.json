@@ -5,6 +5,22 @@
     "password": "123456",
     "role": "user",
     "fullName": "أحمد علي",
+    "location": "المنصورة"
+  },
+  {
+    "id": "USR002",
+    "username": "fatma_user",
+    "password": "abcdef",
+    "role": "user",
+    "fullName": "فاطمة محمد",
+    "location": "طلخا"
+  },
+  {
+    "id": "USR001",
+    "username": "ahmed_user",
+    "password": "123456",
+    "role": "user",
+    "fullName": "أحمد علي",
     "location": "المنصورة",
     "rides": [],
     "deliveries": []
