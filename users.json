@@ -1,0 +1,52 @@
+[
+  {
+    "id": "USR001",
+    "username": "ahmed_user",
+    "password": "123456",
+    "role": "user",
+    "fullName": "أحمد علي",
+    "location": "المنصورة",
+    "rides": [],
+    "deliveries": []
+  },
+  {
+    "id": "USR002",
+    "username": "fatma_user",
+    "password": "abcdef",
+    "role": "user",
+    "fullName": "فاطمة محمد",
+    "location": "طلخا",
+    "rides": [],
+    "deliveries": []
+  },
+  {
+    "id": "USR003",
+    "username": "mohamed_user",
+    "password": "pass789",
+    "role": "user",
+    "fullName": "محمد حسن",
+    "location": "منية النصر",
+    "rides": [],
+    "deliveries": []
+  },
+  {
+    "id": "USR004",
+    "username": "sara_user",
+    "password": "sara2025",
+    "role": "user",
+    "fullName": "سارة إبراهيم",
+    "location": "القاهرة",
+    "rides": [],
+    "deliveries": []
+  },
+  {
+    "id": "USR005",
+    "username": "youssef_user",
+    "password": "youssef321",
+    "role": "user",
+    "fullName": "يوسف محمود",
+    "location": "ميت غمر",
+    "rides": [],
+    "deliveries": []
+  }
+]
