@@ -1,0 +1,6 @@
+{
+  "dailyRides": 120,
+  "averageDeliveryTime": "25 minutes",
+  "activeAreas": ["المنصورة", "طلخا", "منية النصر"],
+  "monthlyRevenue": 15000
+}
