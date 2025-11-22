@@ -1,0 +1,18 @@
+[
+  {
+    "transactionId": "TRX001",
+    "userId": "USR001",
+    "driverId": "DRV001",
+    "amount": 50,
+    "type": "fare",
+    "date": "2025-11-22T20:30:00Z"
+  },
+  {
+    "transactionId": "TRX002",
+    "userId": "USR002",
+    "driverId": "DRV002",
+    "amount": 120,
+    "type": "delivery",
+    "date": "2025-11-22T21:15:00Z"
+  }
+]
